@@ -91,10 +91,9 @@ export class TransactionsService {
       }
     }
 
-    const amountDiff = updateTransactionDto.amount - transaction.amount;
-    let updatedUser: UserEntity;
+    const amountDiff = (updateTransactionDto.amount || 0) - transaction.amount;
     if (amountDiff) {
-      updatedUser = await this.usersService.updateUserBalance(
+      await this.usersService.updateUserBalance(
         user,
         this.getBalanceToAdd(amountDiff, transaction.type),
       );
@@ -105,7 +104,7 @@ export class TransactionsService {
       category: {
         id: updateTransactionDto.categoryId && transaction.categoryId,
       },
-      balanceAfter: amountDiff ? updatedUser.balance : transaction.balanceAfter,
+      balanceAfter: transaction.amount - amountDiff,
     });
 
     return this.transactionsRepository.save(transactionToUpdate);
