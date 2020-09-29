@@ -35,8 +35,12 @@ $ npm install
 ```
 
 ## Running the app
+1. Add required vars to .env file (check .env.example for var names)
+2. run following commands
 
 ```bash
+docker-compose up -d
+
 # development
 $ npm run start
 
@@ -45,19 +49,6 @@ $ npm run start:dev
 
 # production mode
 $ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 ## Support
