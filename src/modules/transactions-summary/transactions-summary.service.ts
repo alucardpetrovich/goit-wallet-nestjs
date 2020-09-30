@@ -52,8 +52,8 @@ export class TransactionsSummaryService {
         TransactionTypes.EXPENSE,
       ),
       periodTotal: this.getTypeSummary(categoriesSummary),
-      year,
-      month,
+      year: year || null,
+      month: month || null,
     };
   }
 
