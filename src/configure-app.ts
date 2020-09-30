@@ -13,6 +13,8 @@ export function configureApp(
       forbidNonWhitelisted: true,
       whitelist: true,
       forbidUnknownValues: true,
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
     }),
   );
   app.enableCors({

@@ -8,6 +8,8 @@ import {
   IsEnum,
   IsISO8601,
 } from 'class-validator';
+import { IsValidExpenseAmount } from './is-valid-expense-amount.decorator';
+import { IsValidIncomeAmount } from './is-valid-income-amount.decorator';
 
 export class CreateTransactionDto {
   @ApiProperty()
@@ -29,5 +31,7 @@ export class CreateTransactionDto {
 
   @ApiProperty()
   @IsNumber()
+  @IsValidExpenseAmount()
+  @IsValidIncomeAmount()
   amount: number;
 }

@@ -12,7 +12,6 @@ import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { UserEntity } from '../users/user.entity';
 import { TransactionCategoriesService } from '../transaction-categories/transaction-categories.service';
 import { UsersService } from '../users/users.service';
-import { TransactionTypes } from 'src/shared/enums/transaction-types.enum';
 
 @Injectable()
 export class TransactionsService {
@@ -44,10 +43,7 @@ export class TransactionsService {
       );
     }
 
-    const updatedUser = await this.usersService.updateUserBalance(
-      user,
-      this.getBalanceToAdd(amount, type),
-    );
+    const updatedUser = await this.usersService.updateUserBalance(user, amount);
 
     return this.transactionsRepository.save({
       ...createTransactionDto,
@@ -93,10 +89,7 @@ export class TransactionsService {
 
     const amountDiff = (updateTransactionDto.amount || 0) - transaction.amount;
     if (amountDiff) {
-      await this.usersService.updateUserBalance(
-        user,
-        this.getBalanceToAdd(amountDiff, transaction.type),
-      );
+      await this.usersService.updateUserBalance(user, amountDiff);
     }
 
     const transactionToUpdate = this.transactionsRepository.merge(transaction, {
@@ -127,20 +120,8 @@ export class TransactionsService {
       throw new ForbiddenException(`User does not owns transaction`);
     }
 
-    await this.usersService.updateUserBalance(
-      user,
-      0 - this.getBalanceToAdd(transaction.amount, transaction.type),
-    );
+    await this.usersService.updateUserBalance(user, 0 - transaction.amount);
 
     await this.transactionsRepository.remove(transaction);
-  }
-
-  private getBalanceToAdd(
-    amountToAdd: number,
-    transactionType: TransactionTypes,
-  ): number {
-    return transactionType === TransactionTypes.EXPENSE
-      ? 0 - amountToAdd
-      : amountToAdd;
   }
 }

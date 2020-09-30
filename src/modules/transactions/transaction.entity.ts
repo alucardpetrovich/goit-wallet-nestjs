@@ -37,7 +37,7 @@ export class TransactionEntity {
   @RelationId((transaction: TransactionEntity) => transaction.user)
   userId: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   comment: string;
 
   @Column('float')
