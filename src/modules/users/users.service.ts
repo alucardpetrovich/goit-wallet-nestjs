@@ -35,6 +35,7 @@ export class UsersService {
       .createQueryBuilder()
       .update(UserEntity)
       .set({ balance: () => `balance + ${amountToAdd}` })
+      .where('id = :userId', { userId: user.id })
       .returning('*')
       .execute();
 
