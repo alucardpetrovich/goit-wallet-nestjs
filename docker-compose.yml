@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:10-alpine
+    container_name: goit-wallet-db
+    restart: on-failure
+    init: true
+    ports:
+      - 5425:5432
+    environment:
+      POSTGRES_USER: goit_wallet
+      POSTGRES_PASSWORD: qwerty
+      POSTGRES_MULTIPLE_DATABASES: goit_wallet
+      POSTGRES_HOST_AUTH_METHOD: trust
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '1m'
+        max-file: '10'
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U kidslike']
+      interval: 20s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
