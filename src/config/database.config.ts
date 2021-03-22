@@ -2,7 +2,7 @@ import { registerAs } from '@nestjs/config';
 import * as convict from 'convict';
 
 export const databaseConfig = registerAs('database', () => {
-  return convict({
+  const config = convict({
     type: {
       doc: 'Database DBMS',
       format: String,
@@ -45,6 +45,17 @@ export const databaseConfig = registerAs('database', () => {
       default: null,
       env: 'DB_SYNCHRONIZE',
     },
+    ssl: {
+      doc: 'Use SSL in database connection',
+      format: Boolean,
+      default: false,
+    },
+    extra: {
+      doc: 'Extra TypeORM connection args',
+      format: '*',
+      default: null,
+      env: 'DB_EXTRA_ARGS',
+    },
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
     options: {
       useUTC: true,
@@ -52,4 +63,15 @@ export const databaseConfig = registerAs('database', () => {
   })
     .validate()
     .getProperties();
+
+  if (config.extra) {
+    const extraOpts = JSON.parse(config.extra);
+
+    Object.assign(config, {
+      extra: extraOpts,
+      ssl: extraOpts.ssl || false,
+    });
+  }
+
+  return config;
 });
