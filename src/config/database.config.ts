@@ -73,5 +73,7 @@ export const databaseConfig = registerAs('database', () => {
     });
   }
 
+  console.log('config', config);
+
   return config;
 });
