@@ -13,6 +13,7 @@ const {
   synchronize,
   entities,
   options,
+  ssl,
 } = databaseConfig();
 
 const cli = {
@@ -32,4 +33,5 @@ export {
   migrations,
   options,
   cli,
+  ssl,
 };
